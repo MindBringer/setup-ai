@@ -41,8 +41,7 @@ cp "$SCRIPT_DIR/docker/docker-compose.yml" "$PROJECT_DIR/docker-compose.yml"
 
 # Kopiere frontend-nginx-Dateien
 mkdir -p "$PROJECT_DIR/frontend-nginx"
-cp "$SCRIPT_DIR/docker/frontend-nginx/Dockerfile" "$PROJECT_DIR/frontend-nginx/"
-cp "$SCRIPT_DIR/docker/frontend-nginx/nginx.conf" "$PROJECT_DIR/frontend-nginx/"
+cp "$SCRIPT_DIR/docker/frontend-nginx/." "$PROJECT_DIR/frontend-nginx/"
 
 # Kopiere frontend build
 mkdir -p "$PROJECT_DIR/frontend"
@@ -52,7 +51,7 @@ cd "$PROJECT_DIR/frontend"
 npm run build
 echo "📦 Kopiere dist/ in Build-Image-Verzeichnis..."
 rm -rf "$SCRIPT_DIR/docker/frontend-nginx/dist"
-cp -r "$PROJECT_DIR/frontend/dist" "$SCRIPT_DIR/docker/frontend-nginx/dist"
+cp -r "$PROJECT_DIR/frontend/dist" "$PROJECT_DIR/frontend-nginx/dist"
 
 # Kopiere n8n-Dateien
 mkdir -p "$PROJECT_DIR/n8n"
