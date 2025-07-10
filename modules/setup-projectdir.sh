@@ -41,7 +41,7 @@ cp "$SCRIPT_DIR/docker/docker-compose.yml" "$PROJECT_DIR/docker-compose.yml"
 
 # Kopiere frontend-nginx-Dateien
 mkdir -p "$PROJECT_DIR/frontend-nginx"
-cp "$SCRIPT_DIR/docker/frontend-nginx/." "$PROJECT_DIR/frontend-nginx/"
+cp -r "$SCRIPT_DIR/docker/frontend-nginx/." "$PROJECT_DIR/frontend-nginx/"
 
 # Kopiere frontend build
 mkdir -p "$PROJECT_DIR/frontend"
