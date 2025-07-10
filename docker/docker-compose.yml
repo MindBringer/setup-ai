@@ -1,0 +1,174 @@
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant
+    ports:
+      - "6333:6333"
+    volumes:
+      - ./data/qdrant:/qdrant/storage       # 🔧 Bind Mount für einfache Sicherung & Analyse
+    restart: unless-stopped
+  
+  n8n:
+    build:
+      context: ./n8n
+      dockerfile: n8n.Dockerfile
+    image: custom-n8n:latest
+    container_name: n8n
+    ports:
+      - "5678:5678"
+    volumes:
+      - ./data/n8n:/home/node/.n8n          # 🔧 Bind Mount – Workflows, Credentials im Klartext
+    environment:
+      - GENERIC_TIMEZONE=Europe/Berlin
+      - N8N_BASIC_AUTH_ACTIVE=false
+    restart: unless-stopped
+
+  whisperx:
+    build: ./whisperx
+    # Port 8080 für die FastAPI-Anwendung freigeben
+    ports:
+      - "8080:8080" # Der interne Port 8080 wird extern auf 8080 gemappt
+    environment:
+      # Stellen Sie sicher, dass HF_TOKEN hier richtig aus Ihrer .env gelesen wird
+      - HF_TOKEN=${WHISPER_HF_TOKEN}
+    restart: unless-stopped
+    volumes:
+      - ./whisperx:/app
+      # Optional: Ein Volume für WhisperX-Modell-Caches, damit diese nicht bei jedem Rebuild neu heruntergeladen werden
+      - whisperx_models:/root/.cache/whisperx
+      - whisperx_models:/root/.cache/huggingface/hub # Für Hugging Face Modelle
+
+  #whisper:
+  #  image: onerahmet/openai-whisper-asr-webservice:latest
+  #  container_name: whisper
+  #  ports:
+  #    - "9000:9000"
+  #  volumes:
+  #    - whisper_cache:/root/.cache          # 🧱 Named Volume – Modelle + Whisper-Cache
+  #  environment:
+  #    - ASR_ENGINE=whisperx
+  #    - ASR_MODEL=medium
+  #  env_file:
+  #    - .env
+  #  restart: unless-stopped
+  tester:
+    image: curlimages/curl:latest
+    container_name: tester
+    entrypoint: tail -f /dev/null
+    networks:
+      - default
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    network_mode: host
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./public:/srv/html
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+  frontend:
+    build:
+      context: ./frontend-nginx
+    container_name: frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - haystack
+    restart: unless-stopped
+
+  haystack:
+    build: ./haystack
+    ports:
+      - "8001:8001"
+    environment:
+      - QDRANT_HOST=qdrant
+      - DEFAULT_MODEL=mistral 
+    depends_on:
+      - qdrant
+      - ollama-mistral
+      - ollama-mixtral
+      - ollama-commandr
+      - ollama-yib
+      - ollama-hermes
+      - ollama-nous
+    restart: unless-stopped
+    volumes:
+      - ./haystack:/app
+      - ./haystack/uploads:/app/uploads       # Benutzer-Uploads (PDF, Audio, etc.)
+      - ./haystack/data:/app/data             # temporär verarbeitete Dateien
+      - ./haystack/config:/app/config         # Pipeline-, Modell-, API-Konfiguration
+      - ./haystack/logs:/app/logs             
+
+  crewai:
+    build: ./crewai
+    ports:
+      - "8010:8010"
+    depends_on:
+      - haystack
+    restart: unless-stopped
+    volumes:
+      - ./crewai:/app
+      - ./crewai/logs:/app/logs               # Agentenprotokolle
+      - ./crewai/config:/app/config 
+
+  ollama-mistral:
+    image: ollama/ollama:latest
+    ports:
+      - "11431:11434"
+    volumes:
+      - ollama_mistral:/root/.ollama
+    restart: unless-stopped
+
+  ollama-mixtral:
+    image: ollama/ollama:latest
+    ports:
+      - "11432:11434"
+    volumes:
+      - ollama_mixtral:/root/.ollama
+    restart: unless-stopped
+
+  ollama-commandr:
+    image: ollama/ollama:latest
+    ports:
+      - "11433:11434"
+    volumes:
+      - ollama_commandr:/root/.ollama
+    restart: unless-stopped
+
+  ollama-yib:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_yib:/root/.ollama
+    restart: unless-stopped
+
+  ollama-hermes:
+    image: ollama/ollama:latest
+    ports:
+      - "11435:11434"
+    volumes:
+      - ollama_hermes:/root/.ollama
+    restart: unless-stopped
+
+  ollama-nous:
+    image: ollama/ollama:latest
+    ports:
+      - "11436:11434"
+    volumes:
+      - ollama_nous:/root/.ollama
+    restart: unless-stopped
+
+volumes:
+  whisperx_models:
+  caddy_data:
+  caddy_config:
+  ollama_mistral:
+  ollama_mixtral:
+  ollama_commandr:
+  ollama_yib:
+  ollama_hermes:
+  ollama_nous:
