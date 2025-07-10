@@ -38,19 +38,6 @@ services:
       - whisperx_models:/root/.cache/whisperx
       - whisperx_models:/root/.cache/huggingface/hub # Für Hugging Face Modelle
 
-  #whisper:
-  #  image: onerahmet/openai-whisper-asr-webservice:latest
-  #  container_name: whisper
-  #  ports:
-  #    - "9000:9000"
-  #  volumes:
-  #    - whisper_cache:/root/.cache          # 🧱 Named Volume – Modelle + Whisper-Cache
-  #  environment:
-  #    - ASR_ENGINE=whisperx
-  #    - ASR_MODEL=medium
-  #  env_file:
-  #    - .env
-  #  restart: unless-stopped
   tester:
     image: curlimages/curl:latest
     container_name: tester
@@ -65,7 +52,6 @@ services:
     network_mode: host
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - ./public:/srv/html
       - caddy_data:/data
       - caddy_config:/config
     restart: unless-stopped
