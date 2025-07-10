@@ -1,23 +1,16 @@
-FROM python:3.11-slim
+FROM deepset/haystack:base-v22.14.3
 
-# Arbeitsverzeichnis setzen
+# Set working directory
 WORKDIR /app
 
-# Systemtools + Buildtools für Python & Dokumentverarbeitung
-RUN apt-get update && apt-get install -y \
-    libmagic1 poppler-utils build-essential gcc \
-    && rm -rf /var/lib/apt/lists/*
+# Install Qdrant integration
+RUN pip install qdrant-haystack
 
-# Python-Requirements vorbereiten
-COPY requirements.txt .
+# Copy app script
+COPY app.py .
 
-# pip-tools: Versionen einfrieren + saubere Installation
-RUN pip install --no-cache-dir pip-tools \
-    && pip-compile requirements.txt \
-    && pip install --no-cache-dir -r requirements.lock
+# Expose port for REST API
+EXPOSE 8000
 
-# Anwendungscode hinzufügen
-COPY . /app
-
-# Start der API mit Uvicorn
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8001"]
+# Entry point
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]

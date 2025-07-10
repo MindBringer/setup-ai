@@ -23,7 +23,8 @@ sudo apt install -y \
   nano git curl jq wget gnupg lsb-release \
   ca-certificates apt-transport-https \
   software-properties-common iproute2 net-tools \
-  iputils-ping traceroute htop lsof npm unzip ufw
+  build-essential python3-dev gfortran libopenblas-dev liblapack-dev \
+  iputils-ping traceroute htop python3-pip python3-venv lsof npm unzip ufw
 
 sudo npm install -g n
 sudo n lts

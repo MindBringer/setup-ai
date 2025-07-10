@@ -64,29 +64,35 @@ services:
     depends_on:
       - haystack
     restart: unless-stopped
-
+  
   haystack:
-    build: ./haystack
+    build:
+      context: ./haystack
     ports:
-      - "8001:8001"
-    environment:
-      - QDRANT_HOST=qdrant
-      - DEFAULT_MODEL=mistral 
-    depends_on:
-      - qdrant
-      - ollama-mistral
-      - ollama-mixtral
-      - ollama-commandr
-      - ollama-yib
-      - ollama-hermes
-      - ollama-nous
-    restart: unless-stopped
-    volumes:
-      - ./haystack:/app
-      - ./haystack/uploads:/app/uploads       # Benutzer-Uploads (PDF, Audio, etc.)
-      - ./haystack/data:/app/data             # temporär verarbeitete Dateien
-      - ./haystack/config:/app/config         # Pipeline-, Modell-, API-Konfiguration
-      - ./haystack/logs:/app/logs             
+      - "8000:8000"
+    restart: "no"
+
+  #haystack:
+  #  build: ./haystack
+  #  ports:
+  #    - "8001:8001"
+  #  environment:
+  #    - QDRANT_HOST=qdrant
+  #    - DEFAULT_MODEL=mistral 
+  #  depends_on:
+  #    - qdrant
+  #    - ollama-mistral
+  #    - ollama-mixtral
+  #    - ollama-commandr
+  #    - ollama-yib
+  #    - ollama-hermes
+  #    - ollama-nous
+  #  restart: unless-stopped
+  #  volumes:
+  #    - ./haystack/uploads:/app/uploads       # Benutzer-Uploads (PDF, Audio, etc.)
+  #    - ./haystack/data:/app/data             # temporär verarbeitete Dateien
+  #    - ./haystack/config:/app/config         # Pipeline-, Modell-, API-Konfiguration
+  #    - ./haystack/logs:/app/logs             
 
   crewai:
     build: ./crewai
