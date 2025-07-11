@@ -1,0 +1,4 @@
+farm-haystack
+qdrant-client
+fastapi
+uvicorn

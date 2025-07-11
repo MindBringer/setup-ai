@@ -98,6 +98,11 @@ api.local {
   tls internal
 }
 
+rag.local {
+  reverse_proxy localhost:8000
+  tls internal
+}
+
 docs.local {
   root * /srv/html
   file_server browse

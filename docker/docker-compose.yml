@@ -66,11 +66,26 @@ services:
     restart: unless-stopped
   
   haystack:
-    build:
-      context: ./haystack
+    image: deepset/haystack:latest
+    container_name: haystack
     ports:
       - "8000:8000"
-    restart: "no"
+    environment:
+      - DOCUMENTSTORE__URL=qdrant:6333
+    depends_on:
+      - qdrant
+    restart: unless-stopped
+
+  custom-api:
+    build: ./haystack     # Pfad zu deinem eigenen Dockerfile + app.py!
+    container_name: haystack-custom-api
+    ports:
+      - "8001:8000"       # außen:8001 → im Container:8000
+    environment:
+      - HAYSTACK_URL=http://haystack:8000
+    depends_on:
+      - haystack
+    restart: unless-stopped
 
   #haystack:
   #  build: ./haystack

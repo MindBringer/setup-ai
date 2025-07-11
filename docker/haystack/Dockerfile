@@ -1,15 +1,13 @@
-FROM deepset/haystack:base-main
+FROM python:3.11-slim
 
-# Set working directory
 WORKDIR /app
 
-# Install Qdrant integration
-RUN pip install qdrant-haystack
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy app script
 COPY app.py .
+COPY utils/ ./utils/
 
-# Expose port for REST API
 EXPOSE 8000
 
-# Entry point
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
