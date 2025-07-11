@@ -1,5 +1,13 @@
-import React from 'react';
-import Home from './pages/Home';
-export default function App() {
-  return <Home />;
+import Ask from "./components/Ask";
+import Upload from "./components/Upload";
+
+function App() {
+  return (
+    <div>
+      <Ask />
+      <Upload />
+    </div>
+  );
 }
+
+export default App;

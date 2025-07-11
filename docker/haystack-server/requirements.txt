@@ -1,2 +1,0 @@
-farm-haystack[all]
-qdrant-client
