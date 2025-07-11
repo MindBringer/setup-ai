@@ -5,7 +5,7 @@ from haystack import Pipeline
 from haystack.components.retrievers import InMemoryEmbeddingRetriever
 from haystack.components.embedders import SentenceTransformersTextEmbedder
 from haystack_integrations.document_stores.qdrant import QdrantDocumentStore
-from haystack.dataclasses import Document
+from haystack import Document
 import os
 
 app = FastAPI()
