@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API_URL = "";
 
 export default function Ask() {
   const [question, setQuestion] = useState("");
@@ -8,14 +8,22 @@ export default function Ask() {
 
   const handleAsk = async () => {
     setAnswer("...");
-    const resp = await fetch(`${API_URL}/ask`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question }),
-    });
-    const data = await resp.json();
-    setAnswer(data.answer || "Keine Antwort");
-  };
+    try {
+      const resp = await fetch(`/api/ask`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question }),
+      });
+      const text = await resp.text(); // Hole Response als Text
+      try {
+        const data = JSON.parse(text);
+        setAnswer(data.answer || data.detail || "Keine Antwort");
+      } catch (parseErr) {
+        setAnswer("Antwort war kein JSON: " + text);
+      }
+    } catch (err) {
+      setAnswer("Fehler: " + (err as Error).message);
+    }
 
   return (
     <div className="max-w-xl mx-auto mt-8 p-4 border rounded-xl shadow">
