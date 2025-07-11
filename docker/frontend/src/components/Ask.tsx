@@ -24,6 +24,7 @@ export default function Ask() {
     } catch (err) {
       setAnswer("Fehler: " + (err as Error).message);
     }
+  };
 
   return (
     <div className="max-w-xl mx-auto mt-8 p-4 border rounded-xl shadow">
