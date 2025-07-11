@@ -1,4 +1,4 @@
-FROM deepset/haystack:base-v22.14.3
+FROM deepset/haystack:base-main
 
 # Set working directory
 WORKDIR /app
@@ -13,4 +13,3 @@ COPY app.py .
 EXPOSE 8000
 
 # Entry point
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
