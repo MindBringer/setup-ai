@@ -65,9 +65,9 @@ services:
       - haystack
     restart: unless-stopped
   
-  haystack:
-    image: deepset/haystack:latest
-    container_name: haystack
+  haystack-server:
+    build: ./haystack-server
+    container_name: haystack-server
     ports:
       - "8000:8000"
     environment:
@@ -84,7 +84,7 @@ services:
     environment:
       - HAYSTACK_URL=http://haystack:8000
     depends_on:
-      - haystack
+      - haystack-server
     restart: unless-stopped
 
   #haystack:
