@@ -62,7 +62,7 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - haystack
+      - haystack-server
     restart: unless-stopped
   
   haystack-server:
@@ -114,7 +114,7 @@ services:
     ports:
       - "8010:8010"
     depends_on:
-      - haystack
+      - haystack-server
     restart: unless-stopped
     volumes:
       - ./crewai:/app

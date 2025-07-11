@@ -61,6 +61,10 @@ cp -r "$SCRIPT_DIR/docker/n8n/." "$PROJECT_DIR/n8n/"
 mkdir -p "$PROJECT_DIR/whisperx"
 cp -r "$SCRIPT_DIR/docker/whisperx/." "$PROJECT_DIR/whisperx/"
 
+# Kopiere haystack-server-Dateien
+mkdir -p "$PROJECT_DIR/haystack-server"
+cp -r "$SCRIPT_DIR/docker/haystack-server/." "$PROJECT_DIR/haystack-server/"
+
 # Kopiere haystack-Dateien
 mkdir -p "$PROJECT_DIR/haystack"
 cp -r "$SCRIPT_DIR/docker/haystack/." "$PROJECT_DIR/haystack/"
