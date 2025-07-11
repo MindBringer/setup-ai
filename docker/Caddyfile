@@ -1,0 +1,41 @@
+{
+  auto_https disable_redirects
+  local_certs
+  admin off
+}
+
+chat.local {
+  reverse_proxy localhost:11431
+  tls internal
+}
+
+n8n.local {
+  reverse_proxy localhost:5678
+  tls internal
+}
+
+whisper.local {
+  reverse_proxy localhost:9000
+  tls internal
+}
+
+api.local {
+  root * /app/dist
+  file_server
+  # API-Proxy, falls nötig:
+  handle_path /api/* {
+    reverse_proxy haystack:8000
+  }
+  tls internal
+}
+
+rag.local {
+  reverse_proxy localhost:3000
+  tls internal
+}
+
+docs.local {
+  root * /srv/html
+  file_server browse
+  tls internal
+}

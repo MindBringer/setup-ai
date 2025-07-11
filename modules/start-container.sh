@@ -15,7 +15,7 @@ check_command() {
 
 # Container phasenweise starten, Modelle prüfen...
 echo "[MODUL] start-container"
-### === [7/8] Container phasenweise starten ===
+### === [7/7] Container phasenweise starten ===
 echo "🧪 Teste Docker-Verfügbarkeit ohne Root..."
 cd "$PROJECT_DIR"
 if ! docker info &>/dev/null; then

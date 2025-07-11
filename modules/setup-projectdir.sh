@@ -38,6 +38,7 @@ export $(grep -v '^[[:space:]]*#' .env | xargs)
 ### === [4/8] Dateien kopieren ===
 echo "[4/8] 📂 Dateien vorbereiten..."
 cp "$SCRIPT_DIR/docker/docker-compose.yml" "$PROJECT_DIR/docker-compose.yml"
+cp "$SCRIPT_DIR/docker/Caddyfile" "$PROJECT_DIR/Caddyfile"
 
 # Kopiere frontend build
 mkdir -p "$PROJECT_DIR/frontend"
@@ -62,49 +63,8 @@ cp -r "$SCRIPT_DIR/docker/haystack/." "$PROJECT_DIR/haystack/"
 mkdir -p "$PROJECT_DIR/crewai"
 cp -r "$SCRIPT_DIR/docker/crewai/." "$PROJECT_DIR/crewai/"
 
-### === [5/8] 🌐 Erzeuge Caddyfile ===
-echo "[5/8] 🌐 Erzeuge Caddyfile für Subdomain-Reverse-Proxy..."
-cat <<EOF > "$PROJECT_DIR/Caddyfile"
-{
-  auto_https disable_redirects
-  local_certs
-  admin off
-}
-
-chat.local {
-  reverse_proxy localhost:11431
-  tls internal
-}
-
-n8n.local {
-  reverse_proxy localhost:5678
-  tls internal
-}
-
-whisper.local {
-  reverse_proxy localhost:9000
-  tls internal
-}
-
-api.local {
-  reverse_proxy localhost:80
-  tls internal
-}
-
-rag.local {
-  reverse_proxy localhost:8000
-  tls internal
-}
-
-docs.local {
-  root * /srv/html
-  file_server browse
-  tls internal
-}
-EOF
-
-### === [6/8] Firewall vorbereiten ===
-echo "[6/8] 🔐 Konfiguriere Firewall..."
+### === [5/7] Firewall vorbereiten ===
+echo "[5/7] 🔐 Konfiguriere Firewall..."
 if command -v ufw &>/dev/null; then
   sudo ufw allow 22/tcp
   sudo ufw allow 80/tcp

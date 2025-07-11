@@ -52,6 +52,7 @@ services:
     network_mode: host
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./frontend/dist:/app/dist:ro
       - caddy_data:/data
       - caddy_config:/config
     restart: unless-stopped

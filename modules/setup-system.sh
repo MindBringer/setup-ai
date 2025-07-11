@@ -16,7 +16,7 @@ check_command() {
 # Systemvorbereitung: Tools, Docker, Volume...
 echo "[MODUL] setup-system"
 
-### === [1/8] System vorbereiten ===
+### === [1/7] System vorbereiten ===
 echo "[1/8] 🛠️  Aktualisiere System & installiere Grundtools..."
 sudo apt update && sudo apt upgrade -y
 sudo apt install -y \
@@ -30,7 +30,7 @@ sudo npm install -g n
 sudo n lts
 npm install --save-dev typescript @types/react @types/react-dom @react-keycloak/web keycloak-js
 
-### === [2/8] Docker & Compose ===
+### === [2/7] Docker & Compose ===
 echo "[2/8] 🐳 Installiere Docker & Compose..."
 check_command sudo install -m 0755 -d /etc/apt/keyrings
 check_command sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
