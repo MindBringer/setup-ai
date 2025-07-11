@@ -1,4 +1,4 @@
-farm-haystack
+haystack-ai[qdrant]==2.15.2
 qdrant-client
 fastapi
 uvicorn
