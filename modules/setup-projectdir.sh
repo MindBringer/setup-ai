@@ -39,19 +39,12 @@ export $(grep -v '^[[:space:]]*#' .env | xargs)
 echo "[4/8] 📂 Dateien vorbereiten..."
 cp "$SCRIPT_DIR/docker/docker-compose.yml" "$PROJECT_DIR/docker-compose.yml"
 
-# Kopiere frontend-nginx-Dateien
-mkdir -p "$PROJECT_DIR/frontend-nginx"
-cp -r "$SCRIPT_DIR/docker/frontend-nginx/." "$PROJECT_DIR/frontend-nginx/"
-
 # Kopiere frontend build
 mkdir -p "$PROJECT_DIR/frontend"
 cp -r "$SCRIPT_DIR/docker/frontend/." "$PROJECT_DIR/frontend/"
 cd "$PROJECT_DIR/frontend"
 [ ! -d node_modules ] && npm install
 npm run build
-echo "📦 Kopiere dist/ in Build-Image-Verzeichnis..."
-rm -rf "$SCRIPT_DIR/docker/frontend-nginx/dist"
-cp -r "$PROJECT_DIR/frontend/dist" "$PROJECT_DIR/frontend-nginx/dist"
 
 # Kopiere n8n-Dateien
 mkdir -p "$PROJECT_DIR/n8n"
@@ -60,10 +53,6 @@ cp -r "$SCRIPT_DIR/docker/n8n/." "$PROJECT_DIR/n8n/"
 # Kopiere whisperX-Dateien
 mkdir -p "$PROJECT_DIR/whisperx"
 cp -r "$SCRIPT_DIR/docker/whisperx/." "$PROJECT_DIR/whisperx/"
-
-# Kopiere haystack-server-Dateien
-mkdir -p "$PROJECT_DIR/haystack-server"
-cp -r "$SCRIPT_DIR/docker/haystack-server/." "$PROJECT_DIR/haystack-server/"
 
 # Kopiere haystack-Dateien
 mkdir -p "$PROJECT_DIR/haystack"
