@@ -52,20 +52,20 @@ services:
       - N8N_BASIC_AUTH_ACTIVE=false
     restart: unless-stopped
 
-  whisperx:
-    build: ./whisperx
+  #whisperx:
+  #  build: ./whisperx
     # Port 8080 für die FastAPI-Anwendung freigeben
-    ports:
-      - "8080:8080" # Der interne Port 8080 wird extern auf 8080 gemappt
-    environment:
+  #  ports:
+  #    - "8080:8080" # Der interne Port 8080 wird extern auf 8080 gemappt
+  #  environment:
       # Stellen Sie sicher, dass HF_TOKEN hier richtig aus Ihrer .env gelesen wird
-      - HF_TOKEN=${WHISPER_HF_TOKEN}
-    restart: unless-stopped
-    volumes:
-      - ./whisperx:/app
-      # Optional: Ein Volume für WhisperX-Modell-Caches, damit diese nicht bei jedem Rebuild neu heruntergeladen werden
-      - whisperx_models:/root/.cache/whisperx
-      - whisperx_models:/root/.cache/huggingface/hub # Für Hugging Face Modelle
+  #    - HF_TOKEN=${WHISPER_HF_TOKEN}
+  #  restart: unless-stopped
+  #  volumes:
+  #    - ./whisperx:/app
+  #    # Optional: Ein Volume für WhisperX-Modell-Caches, damit diese nicht bei jedem Rebuild neu heruntergeladen werden
+  #    - whisperx_models:/root/.cache/whisperx
+  #    - whisperx_models:/root/.cache/huggingface/hub # Für Hugging Face Modelle
 
   #tester:
   #  image: curlimages/curl:latest
