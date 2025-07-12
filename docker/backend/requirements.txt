@@ -1,4 +1,5 @@
 haystack-ai[weaviate] @ git+https://github.com/deepset-ai/haystack.git@main
+haystack-integrations[weaviate] @ git+https://github.com/deepset-ai/haystack-integrations.git@main
 flask==2.3.3
 python-multipart==0.0.9
 requests==2.31.0

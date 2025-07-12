@@ -1,5 +1,5 @@
 
-from haystack.document_stores.weaviate import WeaviateDocumentStore
+from haystack_integrations.document_stores.weaviate import WeaviateDocumentStore
 from haystack.components.preprocessors import DocumentCleaner, DocumentSplitter
 from haystack.components.writers import DocumentWriter
 from haystack.components.builders import PromptBuilder

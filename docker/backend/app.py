@@ -1,8 +1,6 @@
 
 from flask import Flask, request, jsonify
 from haystack.components.converters import TextFileToDocument
-from haystack.components.converters import PDFToTextConverter
-from haystack.components.converters import DocxToTextConverter
 from haystack_config import build_pipeline, OllamaLocalGenerator
 import os
 
