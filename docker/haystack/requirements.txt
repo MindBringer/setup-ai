@@ -1,5 +1,0 @@
-haystack-ai[qdrant]==2.15.2
-qdrant-client
-haystack-integrations-document-stores-qdrant
-fastapi
-uvicorn

@@ -7,7 +7,35 @@ services:
     volumes:
       - ./data/qdrant:/qdrant/storage       # 🔧 Bind Mount für einfache Sicherung & Analyse
     restart: unless-stopped
-  
+
+  weaviate:
+    image: semitechnologies/weaviate:1.24.10
+    ports:
+      - "8080:8080"
+    environment:
+      - QUERY_DEFAULTS_LIMIT=25
+      - AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true
+      - PERSISTENCE_DATA_PATH=/var/lib/weaviate
+      - DEFAULT_VECTORIZER_MODULE=text2vec-transformers
+      - ENABLE_MODULES=text2vec-transformers
+    volumes:
+      - weaviate_data:/var/lib/weaviate
+
+  rag-backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - weaviate
+      - ollama-mixtral
+
+  frontend:
+    image: nginx:alpine
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+
   n8n:
     build:
       context: ./n8n
@@ -57,27 +85,27 @@ services:
       - caddy_config:/config
     restart: unless-stopped
   
-  frontend:
-    build: ./frontend
-    container_name: frontend
-    ports:
-      - "3000:3000"
-    environment:
-      - VITE_API_URL=http://localhost:8000
-    depends_on:
-      - haystack
-    restart: unless-stopped
+#  frontend:
+#    build: ./frontend
+#    container_name: frontend
+#    ports:
+#      - "3000:3000"
+#    environment:
+#      - VITE_API_URL=http://localhost:8000
+#    depends_on:
+#      - haystack
+#    restart: unless-stopped
 
-  haystack:
-    build: ./haystack     # Pfad zu deinem eigenen Dockerfile + app.py!
-    container_name: haystack
-    ports:
-      - "8000:8000"
-    environment:
-      - QDRANT_URL=http://qdrant:6333
-    depends_on:
-      - qdrant
-    restart: unless-stopped
+#  haystack:
+#    build: ./haystack     # Pfad zu deinem eigenen Dockerfile + app.py!
+#    container_name: haystack
+#    ports:
+#      - "8000:8000"
+#    environment:
+#      - QDRANT_URL=http://qdrant:6333
+#    depends_on:
+#      - qdrant
+#    restart: unless-stopped
         
   crewai:
     build: ./crewai
@@ -140,6 +168,7 @@ services:
     restart: unless-stopped
 
 volumes:
+  weaviate_data:
   whisperx_models:
   caddy_data:
   caddy_config:
