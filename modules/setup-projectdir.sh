@@ -43,9 +43,9 @@ cp "$SCRIPT_DIR/docker/Caddyfile" "$PROJECT_DIR/Caddyfile"
 # Kopiere frontend build
 mkdir -p "$PROJECT_DIR/frontend"
 cp -r "$SCRIPT_DIR/docker/frontend/." "$PROJECT_DIR/frontend/"
-cd "$PROJECT_DIR/frontend"
-[ ! -d node_modules ] && npm install
-npm run build
+#cd "$PROJECT_DIR/frontend"
+#[ ! -d node_modules ] && npm install
+#npm run build
 
 # Kopiere n8n-Dateien
 mkdir -p "$PROJECT_DIR/n8n"
@@ -56,8 +56,8 @@ mkdir -p "$PROJECT_DIR/whisperx"
 cp -r "$SCRIPT_DIR/docker/whisperx/." "$PROJECT_DIR/whisperx/"
 
 # Kopiere haystack-Dateien
-mkdir -p "$PROJECT_DIR/haystack"
-cp -r "$SCRIPT_DIR/docker/haystack/." "$PROJECT_DIR/haystack/"
+mkdir -p "$PROJECT_DIR/backend"
+cp -r "$SCRIPT_DIR/docker/backend/." "$PROJECT_DIR/backend/"
 
 # Kopiere crewAI-Dateien
 mkdir -p "$PROJECT_DIR/crewai"
