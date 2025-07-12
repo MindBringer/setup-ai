@@ -1,4 +1,4 @@
-git+https://github.com/deepset-ai/haystack.git@main#egg=farm-haystack[weaviate]
+haystack-ai[weaviate] @ git+https://github.com/deepset-ai/haystack.git@main
 flask==2.3.3
 python-multipart==0.0.9
 requests==2.31.0

@@ -1,6 +1,8 @@
 
 from flask import Flask, request, jsonify
-from haystack.utils import convert_files_to_documents
+from haystack.components.converters import TextFileToDocument
+from haystack.components.converters import PDFToTextConverter
+from haystack.components.converters import DocxToTextConverter
 from haystack_config import build_pipeline, OllamaLocalGenerator
 import os
 
@@ -17,7 +19,12 @@ def upload():
     temp_path = os.path.join("/tmp", file.filename)
     file.save(temp_path)
 
-    docs = convert_files_to_documents(dir_path="/tmp", clean_func=None)
+    converter = TextFileToDocument()
+    with open(temp_path, "r", encoding="utf-8") as f:
+        file_text = f.read()
+
+    result = converter.run(sources=[{"text": file_text, "meta": {"name": file.filename}}])
+    docs = result["documents"]
     rag_pipeline.run(data={"cleaner": {"documents": docs}})
     os.remove(temp_path)
 
