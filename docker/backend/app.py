@@ -21,10 +21,11 @@ def upload():
 
     converter = TextFileToDocument()
     with open(temp_path, "r", encoding="utf-8") as f:
-        file_text = f.read()
+        text = f.read()
 
-    result = converter.run(sources=[{"text": file_text, "meta": {"name": file.filename}}])
+    result = converter.run(sources=[{"text": text, "meta": {"name": file.filename}}])
     docs = result["documents"]
+
     rag_pipeline.run(data={"cleaner": {"documents": docs}})
     os.remove(temp_path)
 
