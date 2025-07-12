@@ -3,7 +3,7 @@
 from haystack.components.preprocessors import DocumentCleaner, DocumentSplitter
 from haystack.components.writers import DocumentWriter
 from haystack.components.builders import PromptBuilder
-from haystack.components.retrievers import WeaviateBM25Retriever
+from haystack.components.retrievers.in_memory import BM25Retriever
 from haystack.pipelines import Pipeline
 from haystack.components.generators import TextGenerator
 from haystack.components.document_stores.weaviate import WeaviateDocumentStore
@@ -37,7 +37,7 @@ def build_pipeline():
     cleaner = DocumentCleaner()
     splitter = DocumentSplitter(split_by="word", split_length=200)
     writer = DocumentWriter(document_store=doc_store)
-    retriever = WeaviateBM25Retriever(document_store=doc_store)
+    retriever = BM25Retriever(document_store=doc_store)
 
     prompt_template = """
     Given these documents:
